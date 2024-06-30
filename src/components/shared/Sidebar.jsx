@@ -1,53 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import logo from '../../assets/images/logo.png';
 import { DASHBOARD_SIDEBAR_BOTTOM_LINKS, DASHBOARD_SIDEBAR_LINKS } from '../../lib/consts/navigation';
 import { Link, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { HiOutlineLogout } from "react-icons/hi";
+import { HiOutlineLogout, HiOutlineMenu } from "react-icons/hi";
 
-
-
-const linkClasses = 'flex item-center gap-2 font-light px-3 py-2 hover:bg-neeutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base'
-
+const linkClasses = 'flex items-center gap-2 font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base';
 
 export default function Sidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(window.innerWidth < 768);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsCollapsed(true);
+      } else {
+        setIsCollapsed(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handlers = useSwipeable({
+    onSwipedLeft: () => setIsCollapsed(true),
+    onSwipedRight: () => setIsCollapsed(false),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  });
+
   return (
-    <div className='flex flex-col bg-blue-950 w-60 p-3 text-white'>
-      <div className='flex items-center gap-2 px-1 py-3'>
-        <img src={logo} alt="logo"/>
+    <div {...handlers} className={classNames('flex flex-col bg-blue-950 text-white transition-all duration-300', { 'w-60': !isCollapsed, 'w-20': isCollapsed })}>
+      <div className='flex items-center justify-between px-3 py-3'>
+        {!isCollapsed && <img src={logo} alt="logo" className='h-10 w-auto transition-all duration-300' />}
+        {isCollapsed && (
+          <button onClick={toggleSidebar} className="text-xl focus:outline-none w-full flex justify-center">
+            <HiOutlineMenu />
+          </button>
+        )}
       </div>
       <div className='flex-1 py-8 flex flex-col gap-0.5'>
         {DASHBOARD_SIDEBAR_LINKS.map((item) => (
-            <SidebarLink key={item.key} item={item} />   
+          <SidebarLink key={item.key} item={item} isCollapsed={isCollapsed} />
         ))}
-      </div >
+      </div>
       <div className='flex flex-col gap-0.5 pt-2 border-t border-blue-900'>
-        {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map(item =>(
-            <SidebarLink key={item.key} item={item} />   
-        ))}   
-            <div 
-                className={classNames
-                ('text-red-400 cursor-pointer', linkClasses)}>
-               <span className='text-xl'>{<HiOutlineLogout />
-
-               }</span>
-            Logout
-            </div>     
+        {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map(item => (
+          <SidebarLink key={item.key} item={item} isCollapsed={isCollapsed} />
+        ))}
+        <div className={classNames('text-red-400 cursor-pointer', linkClasses, { 'justify-center': isCollapsed })}>
+          <span className='text-xl'><HiOutlineLogout /></span>
+          {!isCollapsed && 'Logout'}
         </div>
+      </div>
     </div>
   );
 
-  
-  function SidebarLink({item}) {
-        const { pathname } = useLocation()
+  function SidebarLink({ item, isCollapsed }) {
+    const { pathname } = useLocation();
 
-     return (
-        <Link 
+    return (
+      <Link
         to={item.path}
-            className={classNames(pathname === item.path ? 'bg-blue-950 text-white' : 'text-neutral-400', linkClasses)}>
-            <span className='text-xl'>{item.icon}</span>
-        {item.label}
-        </Link>
-     )
+        className={classNames(pathname === item.path ? 'bg-blue-950 text-white' : 'text-neutral-400', linkClasses, { 'justify-center': isCollapsed })}
+      >
+        <span className='text-xl'>{item.icon}</span>
+        {!isCollapsed && item.label}
+      </Link>
+    );
   }
 }
