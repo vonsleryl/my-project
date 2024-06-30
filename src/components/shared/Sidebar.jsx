@@ -37,6 +37,7 @@ export default function Sidebar() {
     </div>
   );
 
+  
   function SidebarLink({item}) {
         const { pathname } = useLocation()
 
