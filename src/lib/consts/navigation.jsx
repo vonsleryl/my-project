@@ -1,13 +1,13 @@
 import {
 	HiOutlineViewGrid,
-	HiAcademicCap,
-	HiOutlineShoppingCart,
-	HiOutlineUsers,
-	HiOutlineDocumentText,
 	HiOutlineAnnotation,
 	HiOutlineQuestionMarkCircle,
-	HiOutlineCog
+	HiOutlineCog,
+	HiCalendar 
 } from 'react-icons/hi'
+import { AiOutlineTeam } from 'react-icons/ai';
+import { TbReportAnalytics } from "react-icons/tb";
+
 
 export const DASHBOARD_SIDEBAR_LINKS = [
 	{
@@ -20,26 +20,20 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		key: 'students',
 		label: 'Student',
 		path: '/students',
-		icon: <HiAcademicCap />
+		icon: <AiOutlineTeam />
 	},
-	// {
-	// 	key: 'orders',
-	// 	label: 'Orders',
-	// 	path: '/orders',
-	// 	icon: <HiOutlineShoppingCart />
-	// },
-	// {
-	// 	key: 'customers',
-	// 	label: 'Customers',
-	// 	path: '/customers',
-	// 	icon: <HiOutlineUsers />
-	// },
-	// {
-	// 	key: 'transactions',
-	// 	label: 'Transactions',
-	// 	path: '/transactions',
-	// 	icon: <HiOutlineDocumentText />
-	// },
+	{
+		key: 'grades',
+		label: 'Grades',
+		path: '/grades',
+		icon: <TbReportAnalytics  />
+	},
+	{
+		key: 'calendar',
+		label: 'Calendar',
+		path: '/calendar',
+		icon: <HiCalendar />
+	},
 	{
 		key: 'messages',
 		label: 'Messages',
