@@ -4,7 +4,7 @@ import Dashboard from './components/Dashboard';
 import Student from './components/Student';
 import Messages from './components/Messages';
 import Calendar from './components/Calendar';
-import Grades from './components/Grades'; // Correct import path
+import Grades from './components/Grades';
 
 function App() {
   return (

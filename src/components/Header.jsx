@@ -15,7 +15,7 @@ export default function Header() {
       </div>
       <div className='flex items-center ml-4 space-x-4'>
         <button className='relative'>
-          <HiOutlineBell className='text-xl' />
+          <HiOutlineBell className='text-xl transition duration-300 ease-in-out transform hover:text-orange-600' />
           <span className='absolute top-0 right-0 block h-2 w-2 bg-red-600 rounded-full ring-2 ring-white'></span>
         </button>
         <div className='hidden md:flex items-center space-x-2'>
